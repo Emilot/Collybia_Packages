@@ -1,0 +1,36 @@
+# Maintainer: Collybia Team <info@collybia.com>
+# Website: https://collybia.com
+# Based on upmpdcl from AUR made by the following people:
+# Maintainer: Mansour Behabadi <mansour@oxplot.com>
+# Maintainer: Tilman Vatteroth <tilman.vatteroth@udo.edu>
+
+pkgname=upmpdcli-collybia
+_pkgname=upmpdcli
+pkgver=1.4.5
+pkgrel=1
+pkgdesc="A UPnP Media Renderer front-end for the Music Player Daemon (MPD)"
+arch=('armv7h' 'aarch64')
+url="http://www.lesbonscomptes.com/upmpdcli/"
+license=('GPL2')
+depends=('libmpdclient' 'libupnpp-collybia>=0.17.0' 'libmicrohttpd' 'jsoncpp' 'curl' 'expat' 'python-requests' 'python-bottle' 'python-mutagen' 'mutagen' 'aspell-en' 'id3lib' 'python-waitress' 'sqlite3') 
+optdepends=('python2: OpenHome Radio Service')
+install=upmpdcli.install
+source=("http://www.lesbonscomptes.com/upmpdcli/downloads/$_pkgname-$pkgver.tar.gz" 'upmpdcli.service')
+sha256sums=('af0c13b6ab8720d98451307010c33462e9a3f50178bae82c593fd2dd12e31b0e' '53da5e4e40a1987e3c137270b315f8c0ba9521539c563e75e254f48449ce0ae9' )
+backup=('etc/upmpdcli.conf')
+
+build() {
+  cd "$srcdir/$_pkgname-$pkgver"
+  ./configure --sysconfdir=/etc --prefix=/usr
+  make
+}
+
+package() {
+  cd "$srcdir/$_pkgname-$pkgver"
+  make DESTDIR="$pkgdir" install
+  install -Dm644 systemd/upmpdcli.service ${pkgdir}/usr/lib/systemd/system/upmpdcli.service
+  sed '/\[Service\]/a User=upmpdcli' -i ${pkgdir}/usr/lib/systemd/system/upmpdcli.service
+  sed -i '/^After/ s/$/ mpd.service/' ${pkgdir}/usr/lib/systemd/system/upmpdcli.service
+  install -Dm644 $srcdir/upmpdcli.service ${pkgdir}/usr/lib/systemd/user/upmpdcli.service
+  chmod 644 ${pkgdir}/etc/upmpdcli.conf
+}
