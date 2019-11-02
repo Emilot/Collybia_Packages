@@ -1,0 +1,112 @@
+# Maintainer: Collybia Team <info@collybia.com>
+# Website: https://collybia.com
+# Based on ffmpeg-headless from AUR made by the following people
+# Contributor: Maxime Gauduin <alucryd@archlinux.org>
+# Contributor: BartΕ‚omiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Ionut Biru <ibiru@archlinux.org>
+# Contributor: Tom Newsom <Jeepster@gmx.co.uk>
+# Contributor: Paul Mattal <paul@archlinux.org>
+
+_pkgname=ffmpeg
+pkgname=ffmpeg-collybia
+pkgver=4.2.1
+pkgrel=1
+epoch=1
+pkgdesc='The FFmpeg media toolkit optimized for server (headless) systems'
+arch=('armv7h' 'aarch64' 'x86_64')
+url='http://ffmpeg.org/'
+license=('GPL3')
+depends=('bzip2' 'glibc' 'gnutls'
+         'lame' 'libmodplug'
+         'libtheora' 'libxml2'
+         'opus'
+         'xz' 'zlib'
+         'libvorbis.so'
+         'rtmpdump')
+makedepends=('yasm' 'gsm')
+provides=('libavcodec.so' 'libavdevice.so' 'libavfilter.so' 'libavformat.so'
+          'libavresample.so' 'libavutil.so' 'libpostproc.so' 'libswresample.so'
+          'libswscale.so' 'ffmpeg')
+conflicts=('ffmpeg')
+source=("git+https://git.ffmpeg.org/ffmpeg.git#tag=n${pkgver}")
+sha256sums=('sha256sums=
+            'e09e38ab5fd6e8b3b3e6e5a48d837c164ad37aec7e6762a78810c34fe9abf3a1'
+            '2679014448e9352e20e85d8d76b021aeebe27bdf6100b24577afee2f37522a95'
+            'f629e31f7f6f1a79819dcaf84f45ada40cda2b818048da40ae25a147a864a319')
+
+prepare() {
+  cd ${_pkgname}
+
+}
+
+build() {
+
+	cd ${_pkgname}
+
+	[[ $CARCH == "armv7h" || $CARCH == "aarch64" ]] && CONFIG='--host-cflags="-fPIC"'
+
+  ./configure \
+    --prefix='/usr' \
+    --disable-debug \
+    --disable-static \
+    --disable-stripping \
+    --disable-vdpau \
+    --disable-xlib \
+    --disable-sdl2 \
+    --disable-htmlpages \
+    --disable-ffplay \
+    --disable-libass \
+    --disable-libfreetype \
+    --disable-fontconfig \
+    --disable-libiec61883 \
+    --disable-libpulse \
+    --disable-libsoxr \
+    --disable-libssh \
+    --disable-libvidstab \
+    --disable-nvenc \
+    --disable-omx \
+    --disable-libxcb \
+    --disable-libopenjpeg \
+    --disable-libx264 \
+    --disable-libx265 \
+    --disable-libv4l2 \
+    --disable-libopencore_amrnb \
+    --disable-libopencore_amrwb \
+    --disable-libdrm \
+    --disable-libspeex \
+    --disable-libbluray \
+    --disable-libfribidi \
+    --disable-libwebp \
+    --disable-filters \
+    --disable-parsers \
+    --disable-indevs \
+    --disable-outdevs \
+    --disable-encoders \
+    --disable-libxvid \
+    --disable-libvpx \
+    --disable-vaapi \
+    --disable-gmp \
+    --enable-decoders \
+    --enable-avresample \
+    --enable-gnutls \
+    --enable-gpl \
+    --enable-libgsm \
+    --enable-libmodplug \
+    --enable-libmp3lame \
+    --enable-swresample \
+    --enable-libopus \
+    --enable-libtheora \
+    --enable-libvorbis \
+    --enable-libxml2 \
+    --enable-shared \
+    --enable-version3 \
+    --enable-librtmp \
+    --enable-runtime-cpudetect
+
+
+  make
+}
+
+package() {
+  make DESTDIR="${pkgdir}" -C ${_pkgname} install install-man
+}
