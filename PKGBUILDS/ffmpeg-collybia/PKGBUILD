@@ -1,8 +1,9 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: https://collybia.com
+# Website: http://collybia.com
+# Contributor: Mike Andonov <info@archphile.org>
 # Based on ffmpeg-headless from AUR made by the following people
 # Contributor: Maxime Gauduin <alucryd@archlinux.org>
-# Contributor: BartΕ‚omiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Bartlomiej Piotrowski <bpiotrowski@archlinux.org>
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
 # Contributor: Paul Mattal <paul@archlinux.org>
@@ -23,16 +24,13 @@ depends=('bzip2' 'glibc' 'gnutls'
          'xz' 'zlib'
          'libvorbis.so'
          'rtmpdump')
-makedepends=('yasm' 'gsm')
+makedepends=('yasm')
 provides=('libavcodec.so' 'libavdevice.so' 'libavfilter.so' 'libavformat.so'
           'libavresample.so' 'libavutil.so' 'libpostproc.so' 'libswresample.so'
           'libswscale.so' 'ffmpeg')
 conflicts=('ffmpeg')
 source=("git+https://git.ffmpeg.org/ffmpeg.git#tag=n${pkgver}")
-sha256sums=('sha256sums=
-            'e09e38ab5fd6e8b3b3e6e5a48d837c164ad37aec7e6762a78810c34fe9abf3a1'
-            '2679014448e9352e20e85d8d76b021aeebe27bdf6100b24577afee2f37522a95'
-            'f629e31f7f6f1a79819dcaf84f45ada40cda2b818048da40ae25a147a864a319')
+sha256sums=('SKIP')
 
 prepare() {
   cd ${_pkgname}
