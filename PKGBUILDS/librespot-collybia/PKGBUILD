@@ -1,12 +1,13 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: https://collybia.com
+# Website: http://collybia.com
+# Contributor: Mike Andonov <info@archphile.org>
 # Based on a PKGBUILD created by:
 # Maintainer: Francois Menning <f.menning@protonmail.com>
 # Contributor: Christoph Gysin <christoph.gysin@gmail.com>
 
 _pkgname=librespot
 pkgname=librespot-collybia
-pkgver=r740.cbba63f
+pkgver=r750.4a04e48
 pkgrel=1
 pkgdesc='An open source client library for Spotify (ALSA Backend).'
 url='https://github.com/librespot-org/librespot.git'
@@ -45,4 +46,5 @@ package() {
   install -Dm644 "${srcdir}/librespot.service" "${pkgdir}/usr/lib/systemd/system/librespot.service"
 
 }
+
 
