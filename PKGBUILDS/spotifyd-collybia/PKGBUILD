@@ -1,6 +1,6 @@
 # Maintainer: Varakh <varakh@varakh.de>
 
-pkgname=spotifyd-git
+pkgname=spotifyd-collybia
 pkgver=0.2.20.8.g813e8a2
 pkgrel=1
 arch=('x86_64' 'armv7h' 'aarch64')
