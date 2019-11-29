@@ -1,11 +1,11 @@
-Server = http://tardis.tiny-vps.com/aarm/repos/2019/10/27/$arch/$repo
+#Server = http://tardis.tiny-vps.com/aarm/repos/2019/11/29/$arch/$repo
 #
 # Arch Linux ARM repository mirrorlist
 # Generated on 2019-09-21
 #
 
 ## Geo-IP based mirror selection and load balancing
-#Server = http://mirror.archlinuxarm.org/$arch/$repo
+Server = http://mirror.archlinuxarm.org/$arch/$repo
 
 ### Mirrors by country
 
