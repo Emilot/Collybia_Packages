@@ -6,7 +6,7 @@
 # Maintainer: Mansour Behabadi <mansour@oxplot.com>
 # Maintainer: Tilman Vatteroth <tilman.vatteroth@udo.edu>
 
-pkgname=upmpdcli-archphile
+pkgname=upmpdcli-collybia
 _pkgname=upmpdcli
 pkgver=1.4.5
 pkgrel=1
