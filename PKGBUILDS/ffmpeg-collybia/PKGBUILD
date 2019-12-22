@@ -10,7 +10,7 @@
 # Contributor: Paul Mattal <paul@archlinux.org>
 
 _pkgname=ffmpeg
-pkgname=ffmpeg-archphile
+pkgname=ffmpeg-collybia
 pkgver=4.2.1
 pkgrel=4
 epoch=1
@@ -29,7 +29,7 @@ makedepends=('yasm')
 provides=('libavcodec.so' 'libavdevice.so' 'libavfilter.so' 'libavformat.so'
           'libavresample.so' 'libavutil.so' 'libpostproc.so' 'libswresample.so'
           'libswscale.so' 'ffmpeg')
-conflicts=('ffmpeg')
+conflicts=('ffmpeg' 'ffmpeg-collybia')
 source=("https://ffmpeg.org/releases/${_pkgname}-${pkgver}.tar.xz")
 sha256sums=('cec7c87e9b60d174509e263ac4011b522385fd0775292e1670ecc1180c9bb6d4')
 
