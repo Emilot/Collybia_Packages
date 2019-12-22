@@ -1,29 +1,39 @@
-# Maintainer: Varakh <varakh@varakh.de>
+# Maintainer: Collybia Team <info@collybia.com>
+# Website: http://collybia.com
+# Maintainer: Bert Peters <bert@bertptrs.nl>
+# Contributor: Varakh <varakh@varakh.de>
+# Contributor: Florian Klink <flokli@flokli.de>
 
-pkgname=spotifyd-collybia
-pkgver=0.2.20.8.g813e8a2
+pkgbase=spotifyd
+pkgname=('spotifyd-collybia')
+pkgver=0.2.20
 pkgrel=1
-arch=('x86_64' 'armv7h' 'aarch64')
-depends=('flac' 'libogg' 'libsndfile' 'libvorbis')
-makedepends=('git' 'cargo')
-conflicts=('spotifyd')
-provides=('spotifyd')
+arch=('armv7h' 'aarch64')
+license=('GPL3')
+depends=('alsa-lib' 'libogg' 'gcc-libs')
+makedepends=('cargo' 'libpulse' 'dbus')
 pkgdesc="A spotify playing daemon"
-url="https://github.com/Spotifyd/spotifyd"
-source=("spotifyd::git+https://github.com/Spotifyd/spotifyd")
-sha256sums=('SKIP')
-
-pkgver() {
-  cd $srcdir/spotifyd;
-  git describe --tags --match 'v*' | sed 's/^v//;s/-/./g'
-}
+url="https://github.com/Spotifyd/$pkgbase"
+source=("$pkgbase-$pkgver.tar.gz::https://github.com/Spotifyd/$pkgbase/archive/v$pkgver.tar.gz")
+sha256sums=('b76d15756f6024e6f0f288092a1dd6a65e39ee611966c5073e7e734c3058ead5')
+_features=('')
 
 build() {
-  cd $srcdir/spotifyd;
-  cargo build --release
+  cd "$srcdir/spotifyd-$pkgver"
+  # Compile all variants. Compilation for later features can reuse
+  # previous build artifacts, so little overhead.
+  for feature in "${_features[@]}"; do
+    cargo build --release --locked --features "$feature"
+  done
 }
 
-package() {
-  install -D -m 755 "$srcdir/spotifyd/target/release/spotifyd" "${pkgdir}/usr/bin/spotifyd"
-  install -D -m 644 "$srcdir/spotifyd/contrib/spotifyd.service" "${pkgdir}/usr/lib/systemd/user/spotifyd.service"
+_package_feature() {
+  # Create a package for a particular feature.
+  cargo install --locked --root "$pkgdir/usr" --path "$srcdir/$pkgbase-$pkgver" --features "$1"
+  rm "$pkgdir/usr/.crates.toml"
+  install -D -m 644 "$srcdir/$pkgbase-$pkgver/contrib/spotifyd.service" "$pkgdir/usr/lib/systemd/user/spotifyd.service"
+}
+
+package_spotifyd-collybia() {
+  _package_feature "" # no features
 }
