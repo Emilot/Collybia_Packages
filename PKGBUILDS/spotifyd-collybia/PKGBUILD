@@ -1,12 +1,12 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: http://collybia.com
+# Website: https://collybia.com
 # Maintainer: Bert Peters <bert@bertptrs.nl>
 # Contributor: Varakh <varakh@varakh.de>
 # Contributor: Florian Klink <flokli@flokli.de>
 
 pkgbase=spotifyd
-pkgname=('spotifyd-collybia')
-pkgver=0.2.20
+pkgname=('spotifyd')
+pkgver=0.2.23
 pkgrel=1
 arch=('armv7h' 'aarch64')
 license=('GPL3')
@@ -15,7 +15,7 @@ makedepends=('cargo' 'libpulse' 'dbus')
 pkgdesc="A spotify playing daemon"
 url="https://github.com/Spotifyd/$pkgbase"
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/Spotifyd/$pkgbase/archive/v$pkgver.tar.gz")
-sha256sums=('b76d15756f6024e6f0f288092a1dd6a65e39ee611966c5073e7e734c3058ead5')
+sha256sums=('fc282ea0773645106195eb399df900bcbd1a9c5e9e54635ea7b9a9f4b90764bd')
 _features=('')
 
 build() {
@@ -34,6 +34,6 @@ _package_feature() {
   install -D -m 644 "$srcdir/$pkgbase-$pkgver/contrib/spotifyd.service" "$pkgdir/usr/lib/systemd/user/spotifyd.service"
 }
 
-package_spotifyd-collybia() {
+package_spotifyd() {
   _package_feature "" # no features
 }
