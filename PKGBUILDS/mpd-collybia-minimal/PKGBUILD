@@ -1,8 +1,7 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: http://collybia.com
-# Maintainer: Mike Andonov <info@archphile.org>
+# Website: https://collybia.com
+# Contributor: Mike Andonov <info@archphile.org>
 # Contributor: robot <cultofrobots [at] protonmail [dot] com>
-# Website: http://archphile.org
 # Contributor: Marcel <marcel@volkerts.eu>
 # Based on mpd-light from AUR made by the following people:
 # Maintainer: Alexey D. <lq07829icatm@rambler.ru>
@@ -12,16 +11,16 @@
 # Contributor: Damir Perisa <damir.perisa@bluewin.ch>
 # Contributor: Ben <ben@benmazer.net>
 
-pkgname=mpd-collybia-minimal
+pkgname=mpd-collybia
 _pkgname=mpd
 _majorver=0.21
-pkgver=0.21.17
+pkgver=0.21.19
 pkgrel=1
-pkgdesc='Flexible, powerful, server-side application for playing music - minimal package version'
+pkgdesc='Flexible, powerful, server-side application for playing music.'
 url='https://www.musicpd.org/'
 license=('GPL')
 arch=('armv7h' 'aarch64')
-depends=('curl' 'faad2' 'icu' 'libid3tag' 'libmad' 'libmpdclient' 'libsndfile' 'libupnp' 'libsoxr' 'libgme' 'sqlite')
+depends=('audiofile' 'avahi' 'curl' 'faad2' 'ffmpeg-collybia' 'icu' 'libid3tag' 'libmad' 'libmpdclient' 'libsndfile' 'libupnp' 'libsoxr' 'libgme' 'sqlite' 'wavpack')
 makedepends=('boost' 'meson' 'python-sphinx')
 provides=("mpd=$pkgver")
 conflicts=('mpd')
@@ -30,21 +29,23 @@ source=("https://www.musicpd.org/download/mpd/${_majorver}/mpd-${pkgver}.tar.xz"
         'tmpfiles.d'
         'sysusers.d'
         'mpd.conf')
-sha256sums=('8498aa9e114661e99a12c4fcaeab8c6e83a33c6ad9ca0162774699d6c8236a62'
+sha256sums=('d3275e11d85637adde250cadf3b4f5aec2144228f0d8085767493fc46c55b2f9'
             '4e20576ea53141fc398f8e586f30bdf06a404ca099db037724ef80f15c7f2ea3'
             '0b74c6e5db08daab3091dc15a6b0c75210ba2f9e98fa074f6cfd605a461056b6'
-            '190d242416e07dd920d79726561b6834d3de7d60bacc36523ee8532207cbf809')
+            '16c89eda71e09240576841925983bdb6f015c38bd3c50bb89d971f9a984d617d')
+
 backup=('etc/mpd.conf')
 
 prepare() {
 	cd "${srcdir}/mpd-${pkgver}"
-	rm -fr build
+	rm -fr build	
 	install -d build
 }
 
 build() {
 	cd "${srcdir}/mpd-${pkgver}/build"
 	_opts=('-Ddocumentation=true'
+	       '-Dzeroconf=avahi'
 	       '-Dao=disabled'
 	       '-Djack=disabled'
       	       '-Dmodplug=disabled'
@@ -82,11 +83,8 @@ build() {
 	       '-Dopenal=disabled'
  	       '-Dadplug=disabled' 
  	       '-Dmpcdec=disabled'
- 	       '-Dffmpeg=disabled' 
- 	       '-Daudiofile=disabled'
- 	       '-Dwavpack=disabled'
-	       '-Dzeroconf=disabled'
-               '-Dtremor=disabled' 
+	       '-Dtremor=disabled' 
+
 	)
 	arch-meson --auto-features auto  .. ${_opts[@]}
 	ninja
