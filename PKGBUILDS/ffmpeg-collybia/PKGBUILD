@@ -1,24 +1,25 @@
 # Maintainer: Collybia Team <info@collybia.com>
 # Website: http://collybia.com
-# Maintainer: Mike Andonov <info@archphile.org>
-# Website: http://archphile.org
+# Maintainer: Collybia Team <info@collybia.com>
+# Website: http://collybia.com
+# Contributor: Mike Andonov <info@archphile.org>
 # Based on ffmpeg-headless from AUR made by the following people
 # Contributor: Maxime Gauduin <alucryd@archlinux.org>
-# Contributor: Bartłomiej Piotrowski <bpiotrowski@archlinux.org>
+# Contributor: Bartlomiej Piotrowski <bpiotrowski@archlinux.org>
 # Contributor: Ionut Biru <ibiru@archlinux.org>
 # Contributor: Tom Newsom <Jeepster@gmx.co.uk>
 # Contributor: Paul Mattal <paul@archlinux.org>
 
 _pkgname=ffmpeg
 pkgname=ffmpeg-collybia
-pkgver=4.2.1
-pkgrel=4
+pkgver=4.2.2
+pkgrel=1
 epoch=1
 pkgdesc='The FFmpeg media toolkit optimized for server (headless) systems'
-arch=('armv7h' 'aarch64' 'x86_64')
-url='http://ffmpeg.org/'
+arch=('armv7h' 'aarch64')
+url='https://www.ffmpeg.org/'
 license=('GPL3')
-depends=('bzip2' 'glibc' 'gnutls' 'gsm'
+depends=('bzip2' 'glibc' 'gnutls'
          'lame' 'libmodplug'
          'libtheora' 'libxml2'
          'opus'
@@ -29,18 +30,31 @@ makedepends=('yasm')
 provides=('libavcodec.so' 'libavdevice.so' 'libavfilter.so' 'libavformat.so'
           'libavresample.so' 'libavutil.so' 'libpostproc.so' 'libswresample.so'
           'libswscale.so' 'ffmpeg')
-conflicts=('ffmpeg' 'ffmpeg-collybia')
-source=("https://ffmpeg.org/releases/${_pkgname}-${pkgver}.tar.xz")
-sha256sums=('cec7c87e9b60d174509e263ac4011b522385fd0775292e1670ecc1180c9bb6d4')
+conflicts=('ffmpeg')
+source=(git+https://git.ffmpeg.org/ffmpeg.git#tag=192d1d34eb3668fa27f433e96036340e1e5077a0)
+sha256sums=('SKIP')
+
 
 prepare() {
   cd ${_pkgname}-${pkgver}
 
 }
 
+pkgver() {
+  cd ffmpeg
+
+  git describe --tags | sed 's/^n//'
+}
+
+prepare() {
+  cd ffmpeg
+
+  git cherry-pick -n dc0806dd25882f41f6085c8356712f95fded56c7
+}
+
 build() {
 
-	cd ${_pkgname}-${pkgver}
+	cd ${_pkgname}
 
 	[[ $CARCH == "armv7h" || $CARCH == "aarch64" ]] && CONFIG='--host-cflags="-fPIC"'
 
@@ -89,7 +103,7 @@ build() {
     --enable-avresample \
     --enable-gnutls \
     --enable-gpl \
-    --enable-libgsm \
+    --disable-libgsm \
     --enable-libmodplug \
     --enable-libmp3lame \
     --enable-swresample \
@@ -107,5 +121,5 @@ build() {
 }
 
 package() {
-  make DESTDIR="${pkgdir}" -C ${_pkgname}-${pkgver} install install-man
+  make DESTDIR="${pkgdir}" -C ${_pkgname} install install-man
 }
