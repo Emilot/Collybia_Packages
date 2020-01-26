@@ -1,0 +1,7 @@
+#!/bin/bash
+
+var_qobuzuser=$(cat /var/lib/mympd/state/qobuz_user)
+sed "/#qobuzuser =/c qobuzuser = $var_qobuzuser" -i /etc/upmpdcli.conf
+
+var_qobuzpass=$(cat /var/lib/mympd/state/qobuz_pass)
+sed "/#qobuzpass =/c qobuzpass = $var_qobuzpass" -i /etc/upmpdcli.conf

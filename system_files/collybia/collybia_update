@@ -1,0 +1,26 @@
+#!/bin/bash
+
+#MYMPD_VERSION="$(cat /var/lib/mympd/state/collybiaversion)"
+
+#wget https://github.com/Emilot/Collybia_Packages/blob/master/currentrelease.json
+
+function jsonval {
+    MYMPD_VERSION=`echo $json | sed -e 's/^.*"major":"\([^"]*\)".*$/\1/'`
+    echo ${MYMPD_VERSION##*|}
+}
+
+json=`curl -s -X GET https://github.com/Emilot/Collybia_Packages/blob/master/$currentrelease.json`
+
+echo ${MYMPD_VERSION}
+if [[ "$MYMPD_VERSION" =~ "myMpd Version"* ]]; then
+    echo "myMpd is installed"
+  else
+    echo "myMpd is NOT installed"
+fi
+GIT_VERSION="$(git --version)"
+echo ${GIT_VERSION}
+if [[ "$GIT_VERSION" =~ "git version"* ]]; then
+    echo "Git is installed"
+  else
+    echo "Git is NOT installed"
+fi

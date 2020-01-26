@@ -1,0 +1,8 @@
+#!/bin/bash
+
+var_tidaluser=$(cat /var/lib/mympd/state/tidal_user)
+sed "/#tidaluser =/c tidaluser = $var_tidaluser" -i /etc/upmpdcli.conf
+
+var_tidalpass=$(cat /var/lib/mympd/state/tidal_pass)
+sed "/#tidalpass =/c tidalpass = $var_tidalpass" -i /etc/upmpdcli.conf
+

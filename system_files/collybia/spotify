@@ -1,0 +1,10 @@
+#!/bin/bash
+
+var_libruser=$(cat /var/lib/mympd/state/spotify_user)
+sed "/username =/c username = $var_libruser" -i /etc/spotifyd.conf
+
+var_librpass=$(cat /var/lib/mympd/state/spotify_pass)
+sed "/password =/c password = $var_librpass" -i /etc/spotifyd.conf
+
+systemctl start spotifyd
+systemctl enable spotifyd

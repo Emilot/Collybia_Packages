@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sed -i -e 's/mixer_type      "software"/mixer_type      "disabled"/g' /etc/mpd.conf
