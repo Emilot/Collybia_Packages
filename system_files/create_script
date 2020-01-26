@@ -1,0 +1,191 @@
+#!/bin/bash
+
+#created by Mike(Tuxx) for Archphile Project
+#Maintainer Collybia Team
+
+function c_pacinit {
+# Initializing the pacman keyring and populating the Arch Linux ARM package signing keys
+echo -e "${red}Initializing the pacman keyring and populating the package signing key...${NC}" 
+pacman-key --init
+pacman-key --populate archlinuxarm
+}
+
+function c_password {
+# Deleting alarm user and changing Root password
+echo -e "${red}Deleting alarm user...${NC}" 
+userdel -r alarm
+echo -e "${red}Change the root password...${NC}" 
+passwd
+}
+
+function c_hostname {
+# Changing hostname
+echo -e "${red}Changing your hostname...${NC}" 
+hostnamectl set-hostname archphile
+}
+
+function c_dns {
+# Changing DNS servers
+echo -e "${red}Changing DNS servers...${NC}" 
+systemctl disable systemd-resolved
+systemctl mask systemd-resolved
+rm /etc/resolv.conf
+cat > /etc/resolv.conf <<"EOF"
+# Cloudflare DNS
+nameserver 1.1.1.1
+nameserver 1.0.0.1
+# Opendns DNS
+#nameserver 208.67.222.222 
+#nameserver 208.67.220.220
+EOF
+echo -e "${red}Disallowing dhcpcd to change DNS servers...${NC}" 
+echo "nohook resolv.conf" >>/etc/dhcpcd.conf
+}
+
+function c_ipv6 {
+# Disabling ipv6
+# "net.ipv6.conf.all.disable_ipv6=1" added throught archphile-optimize package 
+sed -e '/::1/ s/^#*/#/' -i /etc/hosts
+echo >>/etc/dhcpcd.conf
+echo "#Disable ipv6 connectivity" >>/etc/dhcpcd.conf
+echo "noipv6rs" >>/etc/dhcpcd.conf
+echo "noipv6" >>/etc/dhcpcd.conf
+}
+
+function c_timezone {
+# Locale and timezone configuration
+systemctl disable systemd-timesyncd
+systemctl mask systemd-timesyncd
+pacman -Sy ntp --noconfirm
+echo -e "${red}Changing locale, timezone and ntp configuration...${NC}" 
+sed -i 's/^#en_US.UTF-8 UTF-8.*/en_US.UTF-8 UTF-8/' /etc/locale.gen
+locale-gen
+echo "LANG="en_US.UTF-8"" > /etc/locale.conf
+rm /etc/localtime
+ln -s /usr/share/zoneinfo/Europe/Athens /etc/localtime
+wget https://raw.githubusercontent.com/archphile/recipe/master/files/ntp.conf -O /etc/ntp.conf
+}
+
+function c_fstab {
+# /etc/fstab tweaking
+echo -e "${red}Changing fstab entries...${NC}" 
+wget https://raw.githubusercontent.com/archphile/recipe/master/files/fstab-rpi -O /etc/fstab
+}
+
+function c_repo {
+# Adding Collybia repository
+echo -e "${red}Adding Collybia Repository...${NC}" 
+cat >> /etc/pacman.conf <<"EOF"
+[collybia]
+SigLevel = Never
+Server = https://collybia.com/repo/collybia/arm/rpi4/1.1.0/
+EOF
+}
+
+function c_syspack {
+# Updating ArchlinuxARM	
+echo -e "${red}Updating system...${NC}" 
+pacman -Syu --noconfirm
+
+# Installing system packages
+echo -e "${red}Installing system related packages...${NC}" 
+pacman -S unzip samba cifs-utils nfs-utils udevil ntfs-3g htop avahi --noconfirm
+}
+
+function c_archpack {
+# Installing audio related packages
+echo -e "${red}Installing audio related packages...${NC}" 
+pacman -S alsa-utils mpd-collybia-sacd mpc mympd-collybia upmpdcli-collybia spotifyd-collybia alsacap --noconfirm
+}
+
+function c_purgepack {
+# Removing unneeded packages and cleaning pacman cache
+echo -e "${red}Removing unneeded packages and cleaning pacman cache...${NC}" 
+#pacman -Rcsn lvm2 mdadm reiserfsprogs xfsprogs man-db which s-nail licenses jfsutils gettext logrotate --noconfirm
+pacman -Scc
+}
+
+function c_target {
+# Setting multi-user.target as the new default target
+echo -e "${red}Setting default systemd target...${NC}" 
+systemctl set-default -f multi-user.target
+}
+
+function c_services {
+# Enabling systemd services
+echo -e "${red}Enabling needed Systemd services...${NC}" 
+systemctl enable mpd
+systemctl enable mympd
+systemctl enable avahi-daemon
+}
+
+function c_mpdconf {
+# Creating stuff for MPD
+echo -e "${red}Creating directories needed by MPD and downloading webradios...${NC}" 
+mkdir /mnt/nas-nfs
+mkdir /mnt/nas-samba
+mkdir /mnt/usb-disk
+mkdir /var/lib/mpd/music
+cd /var/lib/mpd/music
+ln -s /mnt/nas-nfs
+ln -s /mnt/nas-samba
+ln -s /mnt/usb-disk
+gpasswd -a mpd audio
+chown -R mpd:audio /var/lib/mpd
+wget https://raw.githubusercontent.com/archphile/WebRadios/master/archphile-script/wrf.sh
+chmod +x wrf.sh
+./wrf.sh
+}
+
+function c_asound {
+# setting the USB or I2S DAC as default sound card
+echo -e "${red}Setting the USB DAC as the default sound card...${NC}" 
+cat > /etc/asound.conf <<"EOF"
+pcm.!default {
+        type hw
+        card 0
+}
+ctl.!default {
+        type hw
+        card 0
+}
+EOF
+}
+
+function c_udevil {
+# udevil configuration
+echo -e "${red}Creating udevil configuration and enabling devmon service...${NC}" 
+wget https://raw.githubusercontent.com/archphile/recipe/master/files/udevil.conf -O /etc/udevil/udevil.conf
+systemctl enable devmon@root
+}
+
+function c_cmdline {
+# Changing cmdline options
+echo -e "${red}Updating cmdline.txt...${NC}" 
+wget https://raw.githubusercontent.com/archphile/recipe/master/files/cmdline.txt -O /boot/cmdline.txt
+}
+
+function c_config {
+# Changing config.txt options
+echo -e "${red}Updating config.txt...${NC}" 
+wget https://raw.githubusercontent.com/archphile/recipe/master/files/config.txt -O /boot/config.txt
+}
+
+c_pacinit
+c_password
+c_hostname
+c_dns
+c_ipv6
+c_timezone
+c_fstab
+c_repo
+c_syspack
+c_archpack
+c_purgepack
+c_target
+c_services
+c_mpdconf
+c_asound
+c_udevil
+c_cmdline
+c_config
