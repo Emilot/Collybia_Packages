@@ -1,26 +1,17 @@
 #!/bin/bash
 
-#MYMPD_VERSION="$(cat /var/lib/mympd/state/collybiaversion)"
+LIB=/home/collybia
 
-#wget https://github.com/Emilot/Collybia_Packages/blob/master/currentrelease.json
+wget https://collybia.com/repo/collybia/arm/rpi4/1.1.0/web_version -O /home/collybia/web_version
 
-function jsonval {
-    MYMPD_VERSION=`echo $json | sed -e 's/^.*"major":"\([^"]*\)".*$/\1/'`
-    echo ${MYMPD_VERSION##*|}
-}
-
-json=`curl -s -X GET https://github.com/Emilot/Collybia_Packages/blob/master/$currentrelease.json`
+MYMPD_VERSION="$(cat /home/collybia/local_version)"
+IMAGE_VERSION_WEB="$(cat /home/collybia/web_version)"
 
 echo ${MYMPD_VERSION}
-if [[ "$MYMPD_VERSION" =~ "myMpd Version"* ]]; then
-    echo "myMpd is installed"
+echo ${IMAGE_VERSION_VERSION}
+if [[ "$IMAGE_VERSION_WEB" > "$MYMPD_VERSION" ]]; then
+    echo "There is an update"
+    $LIB/update_os
   else
-    echo "myMpd is NOT installed"
-fi
-GIT_VERSION="$(git --version)"
-echo ${GIT_VERSION}
-if [[ "$GIT_VERSION" =~ "git version"* ]]; then
-    echo "Git is installed"
-  else
-    echo "Git is NOT installed"
+    echo "No update for the OS"
 fi
