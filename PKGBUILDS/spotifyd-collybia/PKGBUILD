@@ -6,7 +6,7 @@
 
 pkgbase=spotifyd
 pkgname=('spotifyd')
-pkgver=0.2.23
+pkgver=0.2.24
 pkgrel=1
 arch=('armv7h' 'aarch64')
 license=('GPL3')
@@ -32,6 +32,7 @@ _package_feature() {
   cargo install --locked --root "$pkgdir/usr" --path "$srcdir/$pkgbase-$pkgver" --features "$1"
   rm "$pkgdir/usr/.crates.toml"
   install -D -m 644 "$srcdir/$pkgbase-$pkgver/contrib/spotifyd.service" "$pkgdir/usr/lib/systemd/user/spotifyd.service"
+  install -D -m 755 "$srcdir/$pkgbase-$pkgver/contrib/spotifyd-event.sh" "$pkgdir/home/collybia/spotifyd-event.sh"
 }
 
 package_spotifyd() {
