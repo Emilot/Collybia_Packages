@@ -21,7 +21,7 @@ passwd
 function c_hostname {
 # Changing hostname
 echo -e "${red}Changing your hostname...${NC}" 
-hostnamectl set-hostname archphile
+hostnamectl set-hostname collybia
 }
 
 function c_dns {
@@ -63,13 +63,13 @@ locale-gen
 echo "LANG="en_US.UTF-8"" > /etc/locale.conf
 rm /etc/localtime
 ln -s /usr/share/zoneinfo/Europe/Athens /etc/localtime
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/ntp.conf -O /etc/ntp.conf
+wget https://raw.githubusercontent.com/collybia/recipe/master/files/ntp.conf -O /etc/ntp.conf
 }
 
 function c_fstab {
 # /etc/fstab tweaking
 echo -e "${red}Changing fstab entries...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/fstab-rpi -O /etc/fstab
+wget https://raw.githubusercontent.com/collybia/recipe/master/files/fstab-rpi -O /etc/fstab
 }
 
 function c_repo {
@@ -95,7 +95,7 @@ pacman -S unzip samba cifs-utils nfs-utils udevil ntfs-3g htop avahi --noconfirm
 function c_archpack {
 # Installing audio related packages
 echo -e "${red}Installing audio related packages...${NC}" 
-pacman -S alsa-utils mpd-collybia-sacd mpc mympd-collybia upmpdcli-collybia spotifyd-collybia alsacap libmediainfo --noconfirm
+pacman -S alsa-utils mpd-collybia-sacd mpc mympd-collybia upmpdcli-collybia spotifyd-collybia alsacap --noconfirm
 }
 
 function c_purgepack {
@@ -132,7 +132,7 @@ ln -s /mnt/nas-samba
 ln -s /mnt/usb-disk
 gpasswd -a mpd audio
 chown -R mpd:audio /var/lib/mpd
-wget https://raw.githubusercontent.com/archphile/WebRadios/master/archphile-script/wrf.sh
+wget https://raw.githubusercontent.com/collybia/WebRadios/master/archphile-script/wrf.sh
 chmod +x wrf.sh
 ./wrf.sh
 }
@@ -155,20 +155,20 @@ EOF
 function c_udevil {
 # udevil configuration
 echo -e "${red}Creating udevil configuration and enabling devmon service...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/udevil.conf -O /etc/udevil/udevil.conf
+wget https://raw.githubusercontent.com/collybia/recipe/master/files/udevil.conf -O /etc/udevil/udevil.conf
 systemctl enable devmon@root
 }
 
 function c_cmdline {
 # Changing cmdline options
 echo -e "${red}Updating cmdline.txt...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/cmdline.txt -O /boot/cmdline.txt
+wget https://raw.githubusercontent.com/collybia/recipe/master/files/cmdline.txt -O /boot/cmdline.txt
 }
 
 function c_config {
 # Changing config.txt options
 echo -e "${red}Updating config.txt...${NC}" 
-wget https://raw.githubusercontent.com/archphile/recipe/master/files/config.txt -O /boot/config.txt
+wget https://raw.githubusercontent.com/collybia/recipe/master/files/config.txt -O /boot/config.txt
 }
 
 c_pacinit
