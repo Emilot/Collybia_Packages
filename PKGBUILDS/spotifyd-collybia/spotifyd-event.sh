@@ -4,14 +4,13 @@ case "$PLAYER_EVENT" in
 
 start)
 # Stop mpd
-systemctl stop mpd
+mpc stop
 exit
 ;;
 
 stop)
 # Start mpd
-systemctl start mpd
-systemctl start mympd
+mpc play
 exit
 ;;
 esac
