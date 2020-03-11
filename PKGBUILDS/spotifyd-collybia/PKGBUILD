@@ -11,11 +11,11 @@ pkgrel=1
 arch=('armv7h' 'aarch64')
 license=('GPL3')
 depends=('alsa-lib' 'libogg' 'gcc-libs')
-makedepends=('cargo' 'libpulse' 'dbus')
+makedepends=('cargo')
 pkgdesc="A spotify playing daemon"
 url="https://github.com/Spotifyd/$pkgbase"
 source=("$pkgbase-$pkgver.tar.gz::https://github.com/Spotifyd/$pkgbase/archive/v$pkgver.tar.gz")
-sha256sums=('fc282ea0773645106195eb399df900bcbd1a9c5e9e54635ea7b9a9f4b90764bd')
+sha256sums=('d3763f4647217a8f98ee938b50e141d67a5f3d33e9378894fde2a92c9845ef80')
 _features=('')
 
 build() {
@@ -31,8 +31,8 @@ _package_feature() {
   # Create a package for a particular feature.
   cargo install --locked --root "$pkgdir/usr" --path "$srcdir/$pkgbase-$pkgver" --features "$1"
   rm "$pkgdir/usr/.crates.toml"
-  install -D -m 644 "$srcdir/$pkgbase-$pkgver/contrib/spotifyd.service" "$pkgdir/usr/lib/systemd/user/spotifyd.service"
-  install -D -m 755 "$srcdir/$pkgbase-$pkgver/contrib/spotifyd-event.sh" "$pkgdir/home/collybia/spotifyd-event.sh"
+  install -D -m 644 "../spotifyd.service" "/etc/systemd/system/spotifyd.service"
+  install -D -m 755 "../spotifyd-event.sh" "/home/collybia/spotifyd-event.sh"
 }
 
 package_spotifyd() {
