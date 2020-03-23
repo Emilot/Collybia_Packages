@@ -42,5 +42,4 @@ package() {
   mkdir -p ${pkgdir}/etc/
   cp ../../upmpdcli.conf ${pkgdir}/etc/
   chmod 644 ${pkgdir}/etc/upmpdcli.conf
-  cp ../../archphile.png ${pkgdir}/usr/share/upmpdcli/
 }
