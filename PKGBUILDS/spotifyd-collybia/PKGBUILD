@@ -4,8 +4,8 @@
 # Contributor: Varakh <varakh@varakh.de>
 # Contributor: Florian Klink <flokli@flokli.de>
 
-pkgbase=spotifyd
-pkgname=('spotifyd')
+_pkgname=spotifyd
+pkgname=spotifyd-collybia
 pkgver=0.2.24
 pkgrel=1
 arch=('armv7h' 'aarch64')
@@ -14,8 +14,9 @@ depends=('alsa-lib' 'libogg' 'gcc-libs')
 makedepends=('cargo')
 pkgdesc="A spotify playing daemon"
 url="https://github.com/Spotifyd/$pkgbase"
-source=("$pkgbase-$pkgver.tar.gz::https://github.com/Spotifyd/$pkgbase/archive/v$pkgver.tar.gz")
-sha256sums=('d3763f4647217a8f98ee938b50e141d67a5f3d33e9378894fde2a92c9845ef80')
+source=("$_pkgname-$pkgver.tar.gz::https://github.com/Spotifyd/$_pkgname/archive/v$pkgver.tar.gz" "spotifyd-event.sh")
+sha256sums=('d3763f4647217a8f98ee938b50e141d67a5f3d33e9378894fde2a92c9845ef80'
+            '2a87bd351dbb77a13930531c1d4a5f5cd7fe447ef325a968422c446cb65bce30')
 _features=('')
 
 build() {
@@ -27,9 +28,9 @@ build() {
   done
 }
 
-_package_feature() {
+package() {
   # Create a package for a particular feature.
-  cargo install --locked --root "$pkgdir/usr" --path "$srcdir/$pkgbase-$pkgver" --features "$1"
+  cargo install --locked --root "$pkgdir/usr" --path "$srcdir/$_pkgname-$pkgver" --features "$1"
   rm "$pkgdir/usr/.crates.toml"
   install -D -m 644 "../spotifyd.service" "/etc/systemd/system/spotifyd.service"
   install -D -m 755 "../spotifyd-event.sh" "/home/collybia/spotifyd-event.sh"
