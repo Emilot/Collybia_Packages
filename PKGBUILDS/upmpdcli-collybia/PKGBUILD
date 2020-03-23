@@ -19,8 +19,7 @@ optdepends=('python2: OpenHome Radio Service' 'python-requests: enable search' '
 install=upmpdcli.install
 source=("http://www.lesbonscomptes.com/upmpdcli/downloads/${_pkgname}-${pkgver}.tar.gz"
 	'upmpdcli.service'
-	'upmpdcli.conf'
-	'archphile.png')
+	'upmpdcli.conf')
 sha256sums=('55dec356c98e16f00b1e547f9f4a1c03756317102e91982f93eca8cc4eda115e'
 	    '53da5e4e40a1987e3c137270b315f8c0ba9521539c563e75e254f48449ce0ae9'
 	    '5fa004b05b811fc0b1d1f71f374a50de9726dcaef82912ffc2af5510a8f1618c'
