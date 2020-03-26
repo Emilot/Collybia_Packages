@@ -89,7 +89,7 @@ pacman -Syu --noconfirm
 
 # Installing system packages
 echo -e "${red}Installing system related packages...${NC}" 
-pacman -S unzip samba cifs-utils nfs-utils udevil ntfs-3g htop avahi net-tools --noconfirm
+pacman -S unzip samba cifs-utils nfs-utils udevil ntfs-3g htop avahi net-tools sudo --noconfirm
 }
 
 function c_archpack {
