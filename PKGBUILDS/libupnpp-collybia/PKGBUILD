@@ -1,5 +1,5 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: http://collybia.com
+# Website: https://collybia.com
 # Maintainer: Mike Andonov <info@archphile.org>
 # Website: http://archphile.org
 # Based on libupnpp from AUR made by the following people:
@@ -8,15 +8,15 @@
 
 pkgname=libupnpp-collybia
 _pkgname=libupnpp
-pkgver=0.17.2
+pkgver=0.19.1
 pkgrel=1
 pkgdesc="A C++ wrapper for libupnp - used with upmpdcli or upplay"
 url="http://www.lesbonscomptes.com/upplay/downloads.html"
 arch=(armv7h aarch64)
 license=(GPL2)
-depends=(libupnp expat)
+depends=(libnpupnp-collybia expat curl)
 source=("http://www.lesbonscomptes.com/upmpdcli/downloads/${_pkgname}-${pkgver}.tar.gz")
-sha256sums=('5abaaf353a1e9c3482d61ef2627b650285d59f27c1ee60d35b8951952261374f')
+sha256sums=('412b38bdd07441588c11bb1d64af7d112f439a46512d53c907f9b54a6666ff58')
 
 build(){
     cd "${_pkgname}-${pkgver}"
@@ -28,3 +28,4 @@ package(){
     cd "${_pkgname}-${pkgver}"
     make DESTDIR="$pkgdir" install
 }
+sha256sums=('412b38bdd07441588c11bb1d64af7d112f439a46512d53c907f9b54a6666ff58')

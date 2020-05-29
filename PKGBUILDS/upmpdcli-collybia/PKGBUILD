@@ -1,5 +1,5 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: http://collybia.com
+# Website: https://collybia.com
 # Maintainer: Mike Andonov <info@archphile.org>
 # Website: http://archphile.org
 # Based on upmpdcl from AUR made by the following people:
@@ -8,23 +8,23 @@
 
 pkgname=upmpdcli-collybia
 _pkgname=upmpdcli
-pkgver=1.4.7
-pkgrel=1
+pkgver=1.4.10
+pkgrel=2
 pkgdesc="A UPnP Media Renderer front-end for the Music Player Daemon (MPD)"
 arch=('armv7h' 'aarch64')
 url="http://www.lesbonscomptes.com/upmpdcli/"
 license=('GPL2')
-depends=('python' 'libmpdclient' 'libupnpp-collybia>=0.17.0' 'libmicrohttpd' 'jsoncpp')
-makedepends=('python-setuptools' 'libmpdclient' 'libmicrohttpd' 'python-requests' 'recoll' 'python-bottle' 'python-mutagen' 'aspell-en' 'id3lib' 'python-waitress' 'sqlite')
-optdepends=('python2: OpenHome Radio Service' 'python-requests: enable search' 'recoll: enable search' 'python-bottle: enable uprcl media server' 'python-mutagen: enable uprcl media server' 'mutagen: enable uprcl media server' 'aspell-en' 'id3lib' 'python-waitress: enable uprcl media server' 'sqlite')
+depends=('python' 'libmpdclient' 'libupnpp-collybia>=0.17.0' 'libmicrohttpd' 'jsoncpp' 'python-requests')
+makedepends=('python-setuptools' 'libmpdclient' 'libupnpp-collybia>=0.17.0' 'libmicrohttpd' 'jsoncpp' 'python-requests' 'recoll' 'python-bottle' 'python-mutagen' 'aspell-en' 'id3lib' 'python-waitress' 'sqlite')
+optdepends=('python2: OpenHome Radio Service' 'recoll: enable search' 'python-bottle: enable uprcl media server' 'python-mutagen: enable uprcl media server' 'mutagen: enable uprcl media server' 'aspell-en' 'id3lib' 'python-waitress: enable uprcl media server' 'sqlite')
 install=upmpdcli.install
 source=("http://www.lesbonscomptes.com/upmpdcli/downloads/${_pkgname}-${pkgver}.tar.gz"
 	'upmpdcli.service'
-	'upmpdcli.conf')
-sha256sums=('55dec356c98e16f00b1e547f9f4a1c03756317102e91982f93eca8cc4eda115e'
-	    '53da5e4e40a1987e3c137270b315f8c0ba9521539c563e75e254f48449ce0ae9'
-	    '5fa004b05b811fc0b1d1f71f374a50de9726dcaef82912ffc2af5510a8f1618c'
-            '3e6da9fc442b7bb798b6f3dd3b70ee854f1bbd177375ef47b302eeffdb0d6fd1')
+	'upmpdcli.conf'
+	)
+sha256sums=('ecb881d7e22dcb064626ea12d1c582de73020f33bade8a3f00fd0c03cfa59da5'
+            '7144c7f96942c758ffae26d64dc83bf7c2ba142c69d7f83afea5b2fe7ae886f8'
+            'b7af6c8a6ea2bf0d87af218dc5b21bab2d0e5d5f7a91d6274edfa0178d597d9b')
 backup=('etc/upmpdcli.conf')
 
 build() {
@@ -44,3 +44,6 @@ package() {
   cp ../../upmpdcli.conf ${pkgdir}/etc/
   chmod 644 ${pkgdir}/etc/upmpdcli.conf
 }
+sha256sums=('ecb881d7e22dcb064626ea12d1c582de73020f33bade8a3f00fd0c03cfa59da5'
+            '7144c7f96942c758ffae26d64dc83bf7c2ba142c69d7f83afea5b2fe7ae886f8'
+            'b7af6c8a6ea2bf0d87af218dc5b21bab2d0e5d5f7a91d6274edfa0178d597d9b')
