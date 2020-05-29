@@ -1,0 +1,51 @@
+#!/bin/bash
+
+dac=$(cat /var/lib/mympd/state/dac)
+if [ "$dac" = none ]
+then
+rm -rf /boot/config.txt
+
+cat << _EOF_ > /boot/config.txt
+gpu_mem=16
+initramfs initramfs-linux.img followkernel
+kernel=kernel8.img
+arm_64bit=1
+device_tree=broadcom/bcm2711-rpi-4-b.dtb
+enable_gic=1
+disable_splash=1
+disable_overscan=1
+dtparam=i2c_arm=on
+dtparam=i2s=on
+dtparam=audio=off
+dtparam=spi=off
+dtoverlay=pi3-disable-wifi
+dtoverlay=pi3-disable-bt
+disable_pvt=1
+
+_EOF_
+
+  else 
+  rm -rf /boot/config.txt
+
+cat << _EOF_ > /boot/config.txt
+gpu_mem=16
+initramfs initramfs-linux.img followkernel
+kernel=kernel8.img
+arm_64bit=1
+device_tree=broadcom/bcm2711-rpi-4-b.dtb
+enable_gic=1
+disable_splash=1
+disable_overscan=1
+dtparam=i2c_arm=on
+dtparam=i2s=on
+dtparam=audio=off
+dtparam=spi=off
+dtoverlay=pi3-disable-wifi
+dtoverlay=pi3-disable-bt
+disable_pvt=1
+
+
+dtoverlay=$dac
+_EOF_
+
+fi
