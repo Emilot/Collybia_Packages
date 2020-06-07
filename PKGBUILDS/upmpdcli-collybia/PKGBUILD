@@ -44,6 +44,4 @@ package() {
   cp ../../upmpdcli.conf ${pkgdir}/etc/
   chmod 644 ${pkgdir}/etc/upmpdcli.conf
 }
-sha256sums=('ecb881d7e22dcb064626ea12d1c582de73020f33bade8a3f00fd0c03cfa59da5'
-            '7144c7f96942c758ffae26d64dc83bf7c2ba142c69d7f83afea5b2fe7ae886f8'
-            'b7af6c8a6ea2bf0d87af218dc5b21bab2d0e5d5f7a91d6274edfa0178d597d9b')
+
