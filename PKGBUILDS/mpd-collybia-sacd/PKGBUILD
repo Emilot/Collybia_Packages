@@ -1,29 +1,29 @@
 # Maintainer: Collybia Team <info@collybia.com>
-# Website: http://collybia.com
+# Website: https://collybia.com
 # Maintainer: Mike Andonov <info@archphile.org>
 # Website: http://archphile.org
 
 pkgname=mpd-collybia-sacd
 _pkgname=MPD
 pkgver=0.22.0
-pkgrel=5
+pkgrel=7
 pkgdesc='Flexible, powerful, server-side application for playing music. Experimental version with support of SACD ISO playback'
 url='http://www.musicpd.org/'
 license=('GPL')
 arch=('armv7h' 'aarch64')
 depends=('audiofile' 'avahi' 'curl' 'faad2' 'ffmpeg-collybia' 'icu' 'libcdio-paranoia' 'libid3tag' 'libmad' 'libmms' 'libmpdclient' 
-'libsndfile' 'libupnp' 'libsoxr' 'libgme' 'sqlite' 'wavpack' 'zziplib')
+'libsndfile' 'libupnp>=1.8' 'libsoxr' 'libgme' 'sqlite' 'wavpack' 'zziplib')
 makedepends=('boost' 'meson' 'python-sphinx')
 provides=("mpd=$pkgver")
-conflicts=('mpd' 'mpd-collybia-minimal')
-source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=c695aecc02b8a669ddc847d1e3b5207fff7fa3a3'
+conflicts=('mpd')
+source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=d34314fccf1b27b95b70808f51037e7f8ebaab34'
         'tmpfiles.d'
         'sysusers.d'
         'mpd.conf')
 sha256sums=('SKIP'
             '4e20576ea53141fc398f8e586f30bdf06a404ca099db037724ef80f15c7f2ea3'
             '0b74c6e5db08daab3091dc15a6b0c75210ba2f9e98fa074f6cfd605a461056b6'
-            '19290c44c1a9d841649a41d9ccbf5350013ccef09694f6748fbf4b95c93b5330')
+            '2db6a1f4ca976d705d3257170b79083e06f54383f1ec5d5f72ee4b4afa9f8733')
 backup=('etc/mpd.conf')
 
 #pkgver() {
@@ -105,3 +105,7 @@ package() {
 	sed '/WantedBy=/c WantedBy=default.target' -i "${pkgdir}"/usr/lib/systemd/{system,user}/mpd.service
 	sed '/ExecStart=/c ExecStart=/usr/bin/nice -n -16 /usr/bin/mpd --no-daemon' -i "${pkgdir}"/usr/lib/systemd/{system,user}/mpd.service
 }
+sha256sums=('SKIP'
+            '4e20576ea53141fc398f8e586f30bdf06a404ca099db037724ef80f15c7f2ea3'
+            '0b74c6e5db08daab3091dc15a6b0c75210ba2f9e98fa074f6cfd605a461056b6'
+            '6e6c2bbc23d92a3039658cef5a94373c9cfd49648be31e6246d11305109562f5')

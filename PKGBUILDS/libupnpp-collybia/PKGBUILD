@@ -8,13 +8,13 @@
 
 pkgname=libupnpp-collybia
 _pkgname=libupnpp
-pkgver=0.19.1
+pkgver=0.19.2
 pkgrel=1
 pkgdesc="A C++ wrapper for libupnp - used with upmpdcli or upplay"
 url="http://www.lesbonscomptes.com/upplay/downloads.html"
 arch=(armv7h aarch64)
 license=(GPL2)
-depends=(libnpupnp-collybia expat curl)
+depends=(libnpupnp-collybia expat)
 source=("http://www.lesbonscomptes.com/upmpdcli/downloads/${_pkgname}-${pkgver}.tar.gz")
 sha256sums=('412b38bdd07441588c11bb1d64af7d112f439a46512d53c907f9b54a6666ff58')
 
@@ -28,3 +28,4 @@ package(){
     cd "${_pkgname}-${pkgver}"
     make DESTDIR="$pkgdir" install
 }
+sha256sums=('c9623533271605c92dfa603f5fe0ab6d3d5b4384a0c9173800784f4aa643a190')
