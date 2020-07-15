@@ -13,8 +13,9 @@ url='http://pupnp.sourceforge.net/'
 arch=('aarch64')
 license=('BSD')
 depends=('glibc')
-makedepends=('pkgconfig')
+conflicts=('libupnp')
 provides=('libupnp')
+makedepends=('pkgconfig')
 source=(https://downloads.sourceforge.net/sourceforge/pupnp/${_pkgname}-${pkgver}.tar.bz2)
 sha256sums=('65faf240f8ccee50cc0e7fe7fb21dcd79f743fc227a9b652b091f50f6956c2c7')
 
