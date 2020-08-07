@@ -8,7 +8,7 @@
 
 pkgname=libupnpp-collybia
 _pkgname=libupnpp
-pkgver=0.19.2
+pkgver=0.19.3
 pkgrel=1
 pkgdesc="A C++ wrapper for libupnp - used with upmpdcli or upplay"
 url="http://www.lesbonscomptes.com/upplay/downloads.html"
