@@ -8,7 +8,7 @@
 
 pkgname=libnpupnp-collybia
 _pkgname=libnpupnp
-pkgver=4.0.10
+pkgver=4.0.11
 pkgrel=1
 pkgdesc="an UPnP library derived from the venerable pupnp"
 url="http://www.lesbonscomptes.com/upplay/downloads.html"
