@@ -8,8 +8,8 @@
 
 pkgname=upmpdcli-collybia
 _pkgname=upmpdcli
-pkgver=1.4.12
-pkgrel=2
+pkgver=1.4.14
+pkgrel=1
 pkgdesc="A UPnP Media Renderer front-end for the Music Player Daemon (MPD)"
 arch=('armv7h' 'aarch64')
 url="http://www.lesbonscomptes.com/upmpdcli/"
