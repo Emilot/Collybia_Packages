@@ -7,14 +7,16 @@
 _pkgname=spotifyd
 pkgname=spotifyd-collybia
 pkgver=0.2.24
-pkgrel=1
+pkgrel=2
 arch=('armv7h' 'aarch64')
 license=('GPL3')
 depends=('alsa-lib' 'libogg' 'gcc-libs')
 makedepends=('cargo')
 pkgdesc="A spotify playing daemon"
 url="https://github.com/Spotifyd/$pkgbase"
-source=("$_pkgname-$pkgver.tar.gz::https://github.com/Spotifyd/$_pkgname/archive/v$pkgver.tar.gz" "spotifyd-event.sh")
+source=("$_pkgname-$pkgver.tar.gz::https://github.com/Spotifyd/$_pkgname/archive/v$pkgver.tar.gz"
+ "spotifyd-event.sh"
+ "spotifyd.service")
 sha256sums=('d3763f4647217a8f98ee938b50e141d67a5f3d33e9378894fde2a92c9845ef80'
             '2a87bd351dbb77a13930531c1d4a5f5cd7fe447ef325a968422c446cb65bce30')
 _features=('')
