@@ -7,7 +7,7 @@ pkgdesc="Automated weekly build of the default branch aarch64 bcmrpi3_defconfig 
 _kernver=${pkgver%.*}
 pkgrel=1
 arch=('aarch64')
-url="https://github.com/sakaki-/bcm2711-kernel"
+url="https://github.com/sakaki-/bcmrpi3-kernel"
 license=('GPL2')
 options=('!strip')
 depends=('coreutils' 'linux-firmware' 'kmod' 'mkinitcpio>=0.7' 'firmware-raspberrypi')
@@ -16,12 +16,12 @@ provides=("linux=${_kernver}")
 conflicts=('linux-aarch64' 'uboot-raspberrypi')
 install=${_pkgname}.install
 backup=('boot/config.txt' 'boot/cmdline.txt')
-source=("http://github.com/sakaki-/bcm2711-kernel/releases/download/${pkgver}/bcm2711-kernel-${pkgver}.tar.xz"
+source=("https://github.com/sakaki-/bcmrpi3-kernel/releases/download/${pkgver}/bcmrpi3-kernel-${pkgver}.tar.xz"
         'config.txt'
         'cmdline.txt'
         'linux.preset'
         '99-linux.hook')
-sha1sums=('a1d4ebb886d160810264f287168290386b093e82'
+sha1sums=('f4135b1495c8b00373777f15469b93396588530b'
           '472aa9e8528789f17950fb0b06de60ce3f67e4f8'
           'f55155535974425e4c1ab5869fbe86b68cdc04cb'
           '495384696eaccf1ae6894938780cf9bdf3020ef3'
@@ -33,7 +33,7 @@ package() {
   mkdir "${pkgdir}/usr" && cp -r "${srcdir}/lib" "${pkgdir}/usr"
 
   # build full kernel version using CONFIG_LOCALVERSION value from kernel config
-  _fullkernver="${_kernver}$(source "${pkgdir}/boot/config-p4"; echo $CONFIG_LOCALVERSION)+"
+  _fullkernver="${_kernver}$(source "${pkgdir}/boot/config"; echo $CONFIG_LOCALVERSION)+"
 
   # set correct depmod command for install
   sed \

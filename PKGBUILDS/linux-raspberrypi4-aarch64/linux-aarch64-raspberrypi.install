@@ -2,7 +2,7 @@
 # arg 2:  the old package version
 
 KERNEL_NAME=-aarch64-raspberrypi
-KERNEL_VERSION=5.4.65-v8-5c6a87162651-p4+
+KERNEL_VERSION=5.4.65-v8-0cb2a1174a38+
 
 post_install () {
   # updating module dependencies
