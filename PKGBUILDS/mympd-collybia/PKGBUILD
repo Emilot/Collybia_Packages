@@ -10,7 +10,7 @@
 
 pkgname=mympd-collybia
 _pkgname=myMPD
-pkgver=6.6.2c
+pkgver=6.6.2e
 pkgrel=1
 pkgdesc="myMPD is a standalone and mobile friendly web mpdclient."
 arch=('armv7h' 'aarch64' 'x86_64')
@@ -26,7 +26,8 @@ backup=('etc/webapps/mympd/mympd.conf')
 
 source=("https://github.com/emilot/${_pkgname}/archive/v${pkgver}.tar.gz"
 	"mympd.conf")
-sha256sums=('0e06ebace1233340236cc91ef362f5e3170f383a3294603485e0c1c0991da308'
+
+sha256sums=('b00ea89c7259db203d904510601b0a8a79cf982b9df3c063675115f1a1f6c55d'
             '136589d17aeb50c7b4d29d3359d295b45619b25a384938dd2c9a47e5c667082c')
 
 build() {
