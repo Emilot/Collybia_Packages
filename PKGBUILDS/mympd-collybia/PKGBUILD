@@ -2,44 +2,103 @@
 # Website: https://collybia.com
 # Maintainer: Mike Andonov <info@archphile.org>
 # Website: http://archphile.org
-# Based on official PKGBUILD made by:
-#
-# Maintainer: Juergen Mang <mail [at] jcgames [dot] de>
-# Website: https://github.com/jcorporation/myMPD
-# PKGBUILD Based on https://github.com/CultofRobots/archphile-custom/tree/master/mympd
 
-pkgname=mympd-collybia
-_pkgname=myMPD
-pkgver=6.6.2e
-pkgrel=1
-pkgdesc="myMPD is a standalone and mobile friendly web mpdclient."
-arch=('armv7h' 'aarch64' 'x86_64')
-url="http://github.org/jcorporation/myMPD"
+pkgname=mpd-collybia-sacd
+_pkgname=MPD
+pkgver=0.22.0
+pkgrel=9
+pkgdesc='Flexible, powerful, server-side application for playing music. Experimental version with support of SACD ISO playback'
+url='http://www.musicpd.org/'
 license=('GPL')
-depends=('openssl' 'libid3tag' 'flac' 'lua')
-makedepends=('cmake')
-optdepends=('')
-provides=()
-conflicts=()
-replaces=()
-backup=('etc/webapps/mympd/mympd.conf')
+arch=('armv7h' 'aarch64')
+depends=('audiofile' 'avahi' 'curl' 'faad2' 'ffmpeg-collybia' 'icu' 'libcdio-paranoia' 'libid3tag' 'libmad' 'libmms' 'libmpdclient' 
+'libsndfile' 'libupnp' 'libsoxr' 'libgme' 'sqlite' 'wavpack' 'zziplib')
+makedepends=('boost' 'meson' 'python-sphinx')
+provides=("mpd=$pkgver")
+conflicts=('mpd' 'mpd-collybia' 'mpd-collybia-minimal')
+source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=d6421ced4ac484b5c89d63263ac5f2f64c243bfe'
+        'tmpfiles.d'
+        'sysusers.d'
+        'mpd.conf')
+sha256sums=('SKIP'
+            '2faa85c12449a5b3ca422ff1c1fa06d057c7e262a74bfa6298c914a92d6f2e7a'
+            '0b74c6e5db08daab3091dc15a6b0c75210ba2f9e98fa074f6cfd605a461056b6'
+            'e590d98c0ab66b08427a92907bcc6aa69a6430689f1e1c07a7da4a480db5ac92')
+backup=('etc/mpd.conf')
 
-source=("https://github.com/emilot/${_pkgname}/archive/v${pkgver}.tar.gz"
-	"mympd.conf")
+#pkgver() {
+#  cd $_pkgname
+#  printf "r%s.%s" "$(git rev-list --count HEAD)" "$(git rev-parse --short HEAD)"
+#}
 
-sha256sums=('b00ea89c7259db203d904510601b0a8a79cf982b9df3c063675115f1a1f6c55d'
-            '136589d17aeb50c7b4d29d3359d295b45619b25a384938dd2c9a47e5c667082c')
+prepare() {
+	cd "${srcdir}/mpd"
+	rm -rf build
+	install -d build
+}
+
 
 build() {
-  cd "${srcdir}/${_pkgname}-${pkgver}" || exit 1
-  install -d release
-  cd release || exit 1
-  cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr -DCMAKE_BUILD_TYPE=RELEASE ..
-  make
+#	cd "${srcdir}/${_pkgname}"
+        cd "${srcdir}/mpd/build"
+	_opts=('-Ddocumentation=disabled'
+	       '-Dzeroconf=avahi'
+	       '-Dao=disabled'
+	       '-Djack=disabled'
+      	       '-Dmodplug=disabled'
+               '-Dpulse=disabled'
+               '-Dshout=disabled'
+               '-Dsidplay=disabled'
+               '-Dsoundcloud=disabled'
+               '-Dopus=disabled'
+	       '-Dvorbis=disabled'
+               '-Drecorder=false'
+	       '-Dipv6=disabled'
+	       '-Dzzip=disabled'
+               '-Doss=disabled'
+               '-Dfluidsynth=disabled'
+               '-Dgme=disabled'
+               '-Dvorbisenc=disabled'
+               '-Dlame=disabled'
+               '-Dtwolame=disabled'
+               '-Dwave_encoder=false'
+               '-Dwildmidi=disabled'
+               '-Dlibsamplerate=disabled'
+	       '-Dcdio_paranoia=disabled'
+	       '-Dmms=disabled'
+	       '-Dnfs=disabled'
+	       '-Dsmbclient=disabled'
+	       '-Dhttpd=false'
+	       '-Dmikmod=disabled'
+	       '-Dmpg123=disabled'
+	       '-Dchromaprint=disabled'
+	       '-Dsndio=disabled' 
+	       '-Dshine=disabled' 
+	       '-Dopenal=disabled'
+ 	       '-Dadplug=disabled' 
+ 	       '-Dmpcdec=disabled' 
+	       '-Dyajl=disabled'
+	       '-Dqobuz=disabled'
+	       '-Dtidal=disabled'
+	       '-Dsacdiso=true'
+	       '-Ddvdaiso=true'
+               '-Dbzip2=enabled'
+               '-Diso9660=enabled'
+	       '-Dtremor=disabled' 
+	)
+	arch-meson  .. ${_opts[@]}
+	ninja
 }
 
 package() {
-  cd "${srcdir}/${_pkgname}-${pkgver}/release"
-  make DESTDIR="$pkgdir/" install
-  install -Dm644  ../../mympd.conf "$pkgdir/etc/webapps/mympd/mympd.conf" 
+#	cd "${srcdir}/${_pkgname}-${pkgver}/build"
+	cd "${srcdir}/mpd/build"
+	DESTDIR="${pkgdir}" ninja install
+	
+        install -Dm644 ../../mpd.conf "${pkgdir}"/etc/mpd.conf
+	install -Dm644 ../../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
+	install -Dm644 ../../sysusers.d "${pkgdir}"/usr/lib/sysusers.d/mpd.conf
+
+	sed '/WantedBy=/c WantedBy=default.target' -i "${pkgdir}"/usr/lib/systemd/{system,user}/mpd.service
+	sed '/ExecStart=/c ExecStart=/usr/bin/nice -n -16 /usr/bin/mpd --no-daemon' -i "${pkgdir}"/usr/lib/systemd/{system,user}/mpd.service
 }
