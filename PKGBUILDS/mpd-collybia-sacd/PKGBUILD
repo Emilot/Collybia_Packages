@@ -12,18 +12,18 @@ url='http://www.musicpd.org/'
 license=('GPL')
 arch=('armv7h' 'aarch64')
 depends=('audiofile' 'avahi' 'curl' 'faad2' 'ffmpeg-collybia' 'icu' 'libcdio-paranoia' 'libid3tag' 'libmad' 'libmms' 'libmpdclient' 
-'libsndfile' 'libupnp-collybia' 'liburing-collybia' 'libsoxr' 'libgme' 'sqlite' 'wavpack' 'zziplib')
-makedepends=('boost' 'meson' 'python-sphinx' 'libupnp-collybia' 'liburing-collybia')
+'libsndfile' 'libupnp' 'libsoxr' 'libgme' 'sqlite' 'wavpack' 'zziplib')
+makedepends=('boost' 'meson' 'python-sphinx')
 provides=("mpd=$pkgver")
-conflicts=('mpd')
-source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=251ee130bfc62996260a43a36fc775fdc6a8870f'
+conflicts=('mpd' 'mpd-collybia' 'mpd-collybia-minimal')
+source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=d6421ced4ac484b5c89d63263ac5f2f64c243bfe'
         'tmpfiles.d'
         'sysusers.d'
         'mpd.conf')
 sha256sums=('SKIP'
-            '4e20576ea53141fc398f8e586f30bdf06a404ca099db037724ef80f15c7f2ea3'
+            '2faa85c12449a5b3ca422ff1c1fa06d057c7e262a74bfa6298c914a92d6f2e7a'
             '0b74c6e5db08daab3091dc15a6b0c75210ba2f9e98fa074f6cfd605a461056b6'
-            '08c0ddd046847b7e2e0e47444b38c820f88717d327f17d62aa969193e14dd1be')
+            'e590d98c0ab66b08427a92907bcc6aa69a6430689f1e1c07a7da4a480db5ac92')
 backup=('etc/mpd.conf')
 
 #pkgver() {
@@ -41,7 +41,7 @@ prepare() {
 build() {
 #	cd "${srcdir}/${_pkgname}"
         cd "${srcdir}/mpd/build"
-	_opts=('-Ddocumentation=true'
+	_opts=('-Ddocumentation=disabled'
 	       '-Dzeroconf=avahi'
 	       '-Dao=disabled'
 	       '-Djack=disabled'
@@ -67,7 +67,7 @@ build() {
 	       '-Dcdio_paranoia=disabled'
 	       '-Dmms=disabled'
 	       '-Dnfs=disabled'
-	       '-Dsmbclient=enabled'
+	       '-Dsmbclient=disabled'
 	       '-Dhttpd=false'
 	       '-Dmikmod=disabled'
 	       '-Dmpg123=disabled'
@@ -84,7 +84,7 @@ build() {
 	       '-Ddvdaiso=true'
                '-Dbzip2=enabled'
                '-Diso9660=enabled'
-	       '-Dtremor=disabled'
+	       '-Dtremor=disabled' 
 	)
 	arch-meson  .. ${_opts[@]}
 	ninja
@@ -94,9 +94,6 @@ package() {
 #	cd "${srcdir}/${_pkgname}-${pkgver}/build"
 	cd "${srcdir}/mpd/build"
 	DESTDIR="${pkgdir}" ninja install
-        install -Dm644 ../doc/mpdconf.example "${pkgdir}"/usr/share/doc/mpd/mpdconf.example
-	install -Dm644 ../doc/mpd.conf.5 "${pkgdir}"/usr/share/man/man5/mpd.conf.5
-	install -Dm644 ../doc/mpd.1 "${pkgdir}"/usr/share/man/man1/mpd.1
 	
         install -Dm644 ../../mpd.conf "${pkgdir}"/etc/mpd.conf
 	install -Dm644 ../../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
