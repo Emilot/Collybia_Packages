@@ -1,29 +1,27 @@
 # Maintainer: Collybia Team <info@collybia.com>
 # Website: https://collybia.com
-# Maintainer: Mike Andonov <info@archphile.org>
-# Website: http://archphile.org
 
 pkgname=mpd-collybia-sacd
 _pkgname=MPD
-pkgver=0.22.0
-pkgrel=9
+pkgver=0.22.6
+pkgrel=1
 pkgdesc='Flexible, powerful, server-side application for playing music. Experimental version with support of SACD ISO playback'
 url='http://www.musicpd.org/'
 license=('GPL')
 arch=('armv7h' 'aarch64')
 depends=('audiofile' 'avahi' 'curl' 'faad2' 'ffmpeg-collybia' 'icu' 'libcdio-paranoia' 'libid3tag' 'libmad' 'libmms' 'libmpdclient' 
 'libsndfile' 'libupnp' 'libsoxr' 'libgme' 'sqlite' 'wavpack' 'zziplib')
-makedepends=('boost' 'meson' 'python-sphinx')
+makedepends=('boost' 'meson' 'python-sphinx' 'clang' 'ninja' 'liburing')
 provides=("mpd=$pkgver")
-conflicts=('mpd' 'mpd-collybia' 'mpd-collybia-minimal')
-source=('mpd::git+https://git.code.sf.net/p/sacddecoder/mpd/MPD.git#commit=d6421ced4ac484b5c89d63263ac5f2f64c243bfe'
+conflicts=('mpd' 'mpd-collybia-sacd')
+source=("https://github.com/Emilot/${_pkgname}/archive/${pkgver}.tar.gz"
         'tmpfiles.d'
         'sysusers.d'
         'mpd.conf')
 sha256sums=('SKIP'
-            '2faa85c12449a5b3ca422ff1c1fa06d057c7e262a74bfa6298c914a92d6f2e7a'
+            '4e20576ea53141fc398f8e586f30bdf06a404ca099db037724ef80f15c7f2ea3'
             '0b74c6e5db08daab3091dc15a6b0c75210ba2f9e98fa074f6cfd605a461056b6'
-            'e590d98c0ab66b08427a92907bcc6aa69a6430689f1e1c07a7da4a480db5ac92')
+            '8add055067d6fdb299cc63fb10058b8d8d78639a50b8f6c51169bf774f980f03')
 backup=('etc/mpd.conf')
 
 #pkgver() {
@@ -32,38 +30,37 @@ backup=('etc/mpd.conf')
 #}
 
 prepare() {
-	cd "${srcdir}/mpd"
+	cd "${srcdir}/${_pkgname}-${pkgver}"
 	rm -rf build
 	install -d build
 }
 
-
 build() {
 #	cd "${srcdir}/${_pkgname}"
-        cd "${srcdir}/mpd/build"
+            cd "${srcdir}/${_pkgname}-${pkgver}/build"
 	_opts=('-Ddocumentation=disabled'
 	       '-Dzeroconf=avahi'
 	       '-Dao=disabled'
 	       '-Djack=disabled'
       	       '-Dmodplug=disabled'
-               '-Dpulse=disabled'
-               '-Dshout=disabled'
-               '-Dsidplay=disabled'
-               '-Dsoundcloud=disabled'
-               '-Dopus=disabled'
+                   '-Dpulse=disabled'
+                   '-Dshout=disabled'
+                   '-Dsidplay=disabled'
+                   '-Dsoundcloud=disabled'
+                   '-Dopus=disabled'
 	       '-Dvorbis=disabled'
-               '-Drecorder=false'
+                   '-Drecorder=false'
 	       '-Dipv6=disabled'
 	       '-Dzzip=disabled'
-               '-Doss=disabled'
-               '-Dfluidsynth=disabled'
-               '-Dgme=disabled'
-               '-Dvorbisenc=disabled'
-               '-Dlame=disabled'
-               '-Dtwolame=disabled'
-               '-Dwave_encoder=false'
-               '-Dwildmidi=disabled'
-               '-Dlibsamplerate=disabled'
+                   '-Doss=disabled'
+                   '-Dfluidsynth=disabled'
+                   '-Dgme=disabled'
+                   '-Dvorbisenc=disabled'
+                   '-Dlame=disabled'
+                   '-Dtwolame=disabled'
+                   '-Dwave_encoder=false'
+                   '-Dwildmidi=disabled'
+                   '-Dlibsamplerate=disabled'
 	       '-Dcdio_paranoia=disabled'
 	       '-Dmms=disabled'
 	       '-Dnfs=disabled'
@@ -82,20 +79,20 @@ build() {
 	       '-Dtidal=disabled'
 	       '-Dsacdiso=true'
 	       '-Ddvdaiso=true'
-               '-Dbzip2=enabled'
-               '-Diso9660=enabled'
-	       '-Dtremor=disabled' 
+                   '-Dbzip2=enabled'
+                   '-Diso9660=enabled'
+	       '-Dtremor=disabled'
+	       '-Dsnapcast=false'
 	)
-	arch-meson  .. ${_opts[@]}
+	arch-meson --auto-features auto  .. ${_opts[@]}
 	ninja
 }
 
 package() {
-#	cd "${srcdir}/${_pkgname}-${pkgver}/build"
-	cd "${srcdir}/mpd/build"
+	cd "${srcdir}/${_pkgname}-${pkgver}/build"
 	DESTDIR="${pkgdir}" ninja install
 	
-        install -Dm644 ../../mpd.conf "${pkgdir}"/etc/mpd.conf
+            install -Dm644 ../../mpd.conf "${pkgdir}"/etc/mpd.conf
 	install -Dm644 ../../tmpfiles.d "${pkgdir}"/usr/lib/tmpfiles.d/mpd.conf
 	install -Dm644 ../../sysusers.d "${pkgdir}"/usr/lib/sysusers.d/mpd.conf
 
